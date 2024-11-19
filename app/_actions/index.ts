@@ -1,5 +1,7 @@
 "use server";
 import { z } from "zod";
+import { createSession, deleteSession } from "../lib/session";
+import { redirect } from "next/navigation";
 
 const testUser = {
   id: "1",
@@ -35,7 +37,13 @@ export const login = async (prevState: any, formData: FormData) => {
     };
   }
 
-  console.log("DONE");
+  await createSession(testUser.id);
+  redirect("/dashboard");
 
   return;
+};
+
+export const logout = async () => {
+  await deleteSession();
+  redirect("/login");
 };
